@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<HTML>
+	<HEAD>
+		<TITLE>测试</TITLE>
+		<META charset="UTF-8" />
+		<META name="viewport" content="width=device-width, initial-scale=1.0" />
+		<SCRIPT src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></SCRIPT> 
+	</HEAD>
+	<BODY  ng-app="tensquar_reception" ng-controller="vimeoController">
+		<A href="javascript:void(0)" id="div"><H1>点击</H1></A>
+		<SCRIPT>
+					$("#div").click(function getaaa() {
+						var clientId = "5f90a0518d7ab04ec4d9b1e414c6c3bdc084b6d6";
+//						var clientId = "192fba2af80ee1a44f0c4d0771435814b082a4d3";
+						var A = window.open("https://api.vimeo.com/oauth/authorize?\n\
+								response_type=code&\n\
+								client_id=" + clientId + "&\n\
+								redirect_uri=http://localhost:8080/index&\n\
+								state=1&\n\
+								scope={private create edit interact upload video_files public}");
+					});
+		</SCRIPT>
+	</BODY>
+</HTML>

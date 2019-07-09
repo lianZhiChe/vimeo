@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+		<connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+			<driverClass>org.mariadb.jdbc.Driver</driverClass>
+			<url>jdbc:${MARIADB_URL}</url>
+			<user>${MARIADB_USERNAME}</user>
+			<password>${MARIADB_PASSWORD}</password>
+		</connectionSource>
+		<sqlDialect class="ch.qos.logback.core.db.dialect.MySQLDialect"/>
+		<!--
+		<connectionSource class="ch.qos.logback.core.db.JNDIConnectionSource">
+			<jndiLocation>java:comp/env/jdbc/LogBackDS</jndiLocation>
+		</connectionSource>
+		-->
+	</appender>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{80} - %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	<root level="TRACE">
+		<appender-ref ref="DB"/>
+		<appender-ref ref="STDOUT"/>
+	</root>
+</configuration>

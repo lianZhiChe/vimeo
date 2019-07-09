@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="">
+  <!--
+	<Resource
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		name="jdbc/MariaDB"
+		type="javax.sql.DataSource"
+
+		defaultAutoCommit="false"
+		defaultCatalog="${MARIADB_DATABASE}"
+		driverClassName="org.mariadb.jdbc.Driver"
+		url="${MARIADB_URL}"
+		username="${MARIADB_USERNAME}"
+		password="${MARIADB_PASSWORD}"
+		maxActive="100"
+		maxIdle="100"
+		minIdle="10"
+		initialSize="10"
+		maxWait="10000"
+		testOnBorrow="true"
+		testOnConnect="true"
+		testOnReturn="true"
+		testWhileIdle="true"
+		validationQuery="SELECT 1"
+		removeAbandoned="true"
+		logAbandoned="true"
+		connectionProperties="log=true;useCompression=true;serverTimezone=UTC;sessionVariables=time_zone='+08:00'"
+
+		initSQL="SET NAMES 'utf8mb4' COLLATE 'utf8mb4_general_ci'"
+		validationInterval="1000"
+		rollbackOnReturn="true"
+
+		logFailed="true"
+	/>
+	-->
+</Context>

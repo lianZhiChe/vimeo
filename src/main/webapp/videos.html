@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<HTML>
+	<HEAD>
+		<TITLE>视频上传与播放</TITLE>
+		<META charset="UTF-8">
+		<META name="viewport" content="width=device-width, initial-scale=1.0">
+		<SCRIPT src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></SCRIPT> 
+	</HEAD>
+	<BODY>
+		<INPUT type="text" name="divid" id="divid" placeholder="输入视频id"/>
+		<A href="javascript:void(0)" id="div"><H1>点击播放视频</H1></A>
+		<DIV id="vimeohtml"></DIV>
+		<BR/>
+		<HR/>
+		<BR/>
+		<DIV>
+			<INPUT type="text" name="url" id="pullInput" placeholder="输入视频url,如http://...."/>
+			<BUTTON id="pullButton">pull添加视频发送</BUTTON>
+			<DIV id="pullDiv"></DIV>
+		</DIV>
+		<BR/>
+		<HR/>
+		<BR/>
+		<DIV>
+			<BUTTON id="button">发送表单添加视频</BUTTON>
+			<DIV>上传地址:<DIV id="link"></DIV></DIV>
+			<DIV>上传:<DIV id="postDiv"></DIV></DIV>
+		</DIV>
+		<BR/>
+		<HR/>
+		<BR/>
+		<DIV>
+			<INPUT type="text" name="updateid" id="updateid" placeholder="输入视频id"/>
+			<INPUT type="text" name="updatename" id="updatename" placeholder="输入视频修改名称"/>
+			<BUTTON id="update">发送表单修改视频</BUTTON>
+			<DIV>修改地址:<DIV id="updateLink"></DIV></DIV>
+			<DIV>修改:<DIV id="updateDiv"></DIV></DIV>
+			<!--<DIV>报错:<DIV id="errorDiv"></DIV></DIV>-->
+		</DIV>
+		<SCRIPT>
+			//修改视频-表单error
+			$("#update").click(function () {
+				var id = $("#updateid").val();
+				var name = $("#updatename").val();
+				$.get("/updateVideos", {"id": id, "name": name}, function (data) {
+					var json = JSON.parse(data);
+					//视频地址
+					$("#updateLink").html(json["link"]);
+					//视频上传表单
+					var upload = json["upload"];
+					$("#updateDiv").html(upload["form"]);
+//					//报错
+//					$("#errorDiv").html(json["error"]);
+				});
+			});
+			//添加视频-表单
+			$("#button").click(function () {
+				$.get("/getVideos", {}, function (data) {
+					var json = JSON.parse(data);
+					$("#link").html(json["link"]);
+					var upload = json["upload"];
+					$("#postDiv").html(upload["form"]);
+				});
+			});
+
+			//添加视频-pull
+			$("#pullButton").click(function () {
+				var url = $("#pullInput").val();
+				$.get("/getVideosPull", {"url": url}, function (data) {
+					alert(data.link);
+					$("#pullDiv").html(data);
+				});
+			});
+
+			//播放视频
+			$("#div").click(function getaaa() {
+				var id = $("#divid").val();
+				alert(id);
+				$.get("https://vimeo.com/api/oembed.json?url=https://player.vimeo.com/video/346998887", {}, function (data) {
+					$("#vimeohtml").html(data.html);
+				});
+			});
+		</SCRIPT>
+	</BODY>
+</HTML>

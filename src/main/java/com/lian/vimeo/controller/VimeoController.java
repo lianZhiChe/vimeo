@@ -86,6 +86,26 @@ public class VimeoController {
 	}
 
 	/**
+	 * 删除视频
+	 *
+	 * @param id
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/deleteVideos", produces = {"text/String;charset=UTF-8"})
+	public String deleteVideos(String id) throws IOException {
+		//获取token
+		HttpSession session = httpServletRequest.getSession();
+		String token = session.getAttribute("token").toString();
+		System.out.println("token:" + token);
+//		String token = new JSONObject(getToken()).get("access_token").toString();
+		//发送删除请求
+		String videos = vimeoService.deleteVideos(token, id);
+		System.out.println("deleteVideos--" + videos);
+		return videos;
+	}
+
+	/**
 	 * 修改视频-基于表单
 	 *
 	 * @param id

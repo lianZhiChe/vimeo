@@ -7,6 +7,7 @@ package com.lian.vimeo.service;
 
 import java.io.IOException;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -88,7 +89,7 @@ public class VimeoService {
 		//封装请求参数
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("grant_type", "client_credentials");
-		jsonObject.put("scope", "public");
+		jsonObject.put("scope", "private purchased create edit delete interact upload promo_codes video_files public");
 
 		//封装请求体
 		StringEntity stringEntity = new StringEntity(jsonObject.toString(), "UTF-8");
@@ -138,6 +139,37 @@ public class VimeoService {
 
 		//获取返回参数
 		return new JSONObject(EntityUtils.toString(closeableHttpResponse.getEntity())).toString();
+	}
+
+	/**
+	 * 删除视频
+	 *
+	 * @param token
+	 * @param id
+	 * @return
+	 * @throws IOException
+	 */
+	public String deleteVideos(String token, String id) throws IOException {
+		//创建post请求
+		HttpDelete httpDelete = new HttpDelete("https://api.vimeo.com/videos/" + id);
+
+		//添加请求头
+		httpDelete.setHeader("Authorization", "bearer " + token);
+		httpDelete.setHeader("Content-Type", "application/json");
+		httpDelete.setHeader("Accept", "application/vnd.vimeo.*+json;version=3.4");
+
+		//发送请求
+		CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+		CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(httpDelete);
+
+		//获取返回参数
+		try {
+			String toString = new JSONObject(EntityUtils.toString(closeableHttpResponse.getEntity())).toString();
+			return toString;
+		} catch (Exception e) {
+			e.getMessage();
+			return "删除成功";
+		}
 	}
 
 	/**

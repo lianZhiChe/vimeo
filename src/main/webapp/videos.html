@@ -42,7 +42,20 @@ and open the template in the editor.
 			<DIV>修改:<DIV id="updateDiv"></DIV></DIV>
 			<!--<DIV>报错:<DIV id="errorDiv"></DIV></DIV>-->
 		</DIV>
+		<BR/>
+		<HR/>
+		<BR/>
+		<DIV>
+			<INPUT type="text" name="deleteid" id="deleteid" placeholder="输入视频id"/>
+			<BUTTON id="delete">删除视频</BUTTON>
+		</DIV>
 		<SCRIPT>
+			$("#delete").click(function () {
+				var id = $("#deleteid").val();
+				$.get("/deleteVideos", {"id": id}, function (data) {
+					alert(data);
+				});
+			});
 			//修改视频-表单error
 			$("#update").click(function () {
 				var id = $("#updateid").val();

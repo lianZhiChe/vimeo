@@ -125,6 +125,19 @@ public class VimeoController {
 	}
 
 	/**
+	 * 获取令牌
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("/getToken")
+	public String getToken() throws IOException {
+		//获取token
+		String token = vimeoService.getToken2();
+		return token;
+	}
+
+	/**
 	 * 获取Microsft-Token
 	 *
 	 * @param code
@@ -137,20 +150,57 @@ public class VimeoController {
 		if (!"1".equals(state)) {
 			return null;
 		}
-		System.out.println("code+"+code);
-		String microsftTokenObject = vimeoService.getMicrosftToken(code);
-		return microsftTokenObject;
+		System.out.println("code+" + code);//refresh_token
+		JSONObject jsonObject = new JSONObject(vimeoService.getMicrosftToken(code));
+		//access_token
+		String token = jsonObject.get("access_token").toString();
+		System.out.println("Microsft-Token:" + token);
+		HttpSession session = httpServletRequest.getSession();
+		session.setAttribute("Microsft-Token", token);
+		//refresh_token
+		String refresh = jsonObject.get("refresh_token").toString();
+		System.out.println("Microsft-refresh_token:" + refresh);
+		session.setAttribute("Microsft-refresh_token", refresh);
+		//id_token
+		String idToken = jsonObject.get("id_token").toString();
+		System.out.println("Microsft-id_token:" + idToken);
+		session.setAttribute("Microsft-id_token", idToken);
+		return token;
 	}
+	
 	/**
-	 * 获取令牌
+	 * 使用Microsft令牌
 	 *
 	 * @return
-	 * @throws IOException
 	 */
-	@RequestMapping("/getToken")
-	public String getToken() throws IOException {
-		//获取token
-		String token = vimeoService.getToken2();
-		return token;
+	@RequestMapping("/useMicrosftToken")
+	public String useMicrosftToken() throws IOException {
+		//获取令牌
+		HttpSession session = httpServletRequest.getSession();
+		String token = session.getAttribute("Microsft-Token").toString();
+		String useMicrosftToken = vimeoService.useMicrosftToken(token);
+		return useMicrosftToken;
+	}
+
+	/**
+	 * 刷新Microsft令牌
+	 *
+	 * @return
+	 */
+	@RequestMapping("/refreshMicrosftToken")
+	public String refreshMicrosftToken() throws IOException {
+		//获取令牌
+		HttpSession session = httpServletRequest.getSession();
+		String token = session.getAttribute("Microsft-refresh_token").toString();
+		JSONObject jsonObject = new JSONObject(vimeoService.refreshMicrosftToken(token));
+		//令牌
+		String refreshToken = jsonObject.get("access_token").toString();
+		System.out.println("Microsft-Token:" + refreshToken);
+		session.setAttribute("Microsft-Token", refreshToken);
+		//刷新令牌使用的token
+		String refresh = jsonObject.get("refresh_token").toString();
+		System.out.println("Microsft-refresh_token:" + refresh);
+		session.setAttribute("Microsft-refresh_token", refresh);
+		return jsonObject.toString();
 	}
 }

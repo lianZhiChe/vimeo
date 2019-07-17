@@ -77,8 +77,9 @@ public class VimeoController {
 	 */
 	@RequestMapping("/getVideos")
 	public String getVideos() throws IOException {
-		HttpSession session = httpServletRequest.getSession();
-		String token = session.getAttribute("token").toString();
+//		HttpSession session = httpServletRequest.getSession();
+//		String token = session.getAttribute("token").toString();
+		String token = new JSONObject(getToken()).get("access_token").toString();
 		System.out.println("token:" + token);
 		String videos = vimeoService.getVideos(token);
 		System.out.println("getVideos--" + videos);
@@ -131,14 +132,15 @@ public class VimeoController {
 	 * @return
 	 * @throws IOException
 	 */
-//	@RequestMapping("/microsft")
-//	public String getMicrosftToken(String code, String state) throws IOException {
-//		if (!"1".equals(state)) {
-//			return null;
-//		}
-////		String microsftTokenObject = vimeoService.getMicrosftToken(code);
-//		return code;
-//	}
+	@RequestMapping("/microsft")
+	public String getMicrosftToken(String code, String state) throws IOException {
+		if (!"1".equals(state)) {
+			return null;
+		}
+		System.out.println("code+"+code);
+		String microsftTokenObject = vimeoService.getMicrosftToken(code);
+		return microsftTokenObject;
+	}
 	/**
 	 * 获取令牌
 	 *

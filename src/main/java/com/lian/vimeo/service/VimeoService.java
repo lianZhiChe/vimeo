@@ -6,6 +6,9 @@
 package com.lian.vimeo.service;
 
 import java.io.IOException;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
@@ -249,35 +252,44 @@ public class VimeoService {
 		return new JSONObject(EntityUtils.toString(closeableHttpResponse.getEntity())).toString();
 	}
 
-//	/**
-//	 * 获取Microsft-Token
-//	 *
-//	 * @param code
-//	 * @return
-//	 */
-//	public String getMicrosftToken(String code) throws IOException {
-//
-//		String id = "e541cb7b-c24a-4211-991b-7c9ab25ad964";
-//
-//		//创建post请求grant_type authorization_code
-//		HttpPost httpPost = new HttpPost("https://login.microsoftonline.com/common/oauth2/v2.0/token?"
-//			+ "client_id=" + id
-//			+ "&grant_type=authorization_code"
-//			+ "&scope=openid%20offline_access%20https%3A%2F%2Fgraph.microsoft.com%2Fuser.read"
-//			+ "&code=" + code
-//			+ "&redirect_uri=http://localhost:8080/microsft"
-//			+ "&client_secret=9c111fbb-82a1-405a-8f7a-d827857141d9");
-//
-//		//添加请求头
-//		httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
-//
-//		//发送请求
-//		CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
-//		CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(httpPost);
-//
-//		System.out.println("1111111111111----" + EntityUtils.toString(closeableHttpResponse.getEntity(), "UTF-8"));
-//
-//		//获取返回参数
-//		return EntityUtils.toString(closeableHttpResponse.getEntity(), "UTF-8");
-//	}
+	/**
+	 * 获取Microsft-Token
+	 *
+	 * @param code
+	 * @return
+	 */
+	public String getMicrosftToken(String code) throws IOException {
+
+		String id = "e541cb7b-c24a-4211-991b-7c9ab25ad964";
+
+		//创建post请求grant_type authorization_code
+		PostMethod postMethod = new PostMethod("https://login.microsoftonline.com/common/oauth2/v2.0/token");
+		//添加请求头
+		postMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+		//添加请求体
+		NameValuePair[] data = {
+			new NameValuePair("client_id", id),
+			new NameValuePair("scope", "Calendars.Read"),
+			new NameValuePair("code", code),
+			new NameValuePair("redirect_uri", "http://localhost:8080/microsft"),
+			new NameValuePair("grant_type", "authorization_code")
+
+		};
+
+		//封装请求体
+		postMethod.setRequestBody(data);
+
+		//发送请求
+		HttpClient httpClient = new HttpClient();
+		int response = httpClient.executeMethod(postMethod); //执行POST方法
+		String result = postMethod.getResponseBodyAsString();
+		//返回状态码
+		System.out.println("1111111111111----" + response);
+		//返回数据
+		System.out.println("1111111111111----" + result);
+
+		//获取返回参数
+		return result;
+	}
 }

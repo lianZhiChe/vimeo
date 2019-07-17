@@ -12,16 +12,17 @@ and open the template in the editor.
 		<SCRIPT src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></SCRIPT> 
 	</HEAD>
 	<BODY>
-		<A href="javascript:void(0)" id="div"><H1>点击</H1></A>
+		<A href="javascript:void(0)" id="div"><H1>授权码模式点击</H1></A>
 		<SCRIPT>
-			$("#div").click(function getaaa() {
+			//授权码模式
+			$("#div").click(function () {
 				var clientId = "e541cb7b-c24a-4211-991b-7c9ab25ad964";
 				var A = window.open("https://login.microsoftonline.com/common/oauth2/v2.0/authorize?" +
 					"client_id=" + clientId +
 					"&response_type=code" +
 					"&redirect_uri=http://localhost:8080/microsft" +
 					"&response_mode=query" +
-					"&scope=openid%20offline_access%20https%3A%2F%2Fgraph.microsoft.com%2Fuser.read" +
+					"&scope=Calendars.Read" +
 					"&state=1");
 			});
 		</SCRIPT>

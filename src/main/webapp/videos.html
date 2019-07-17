@@ -49,6 +49,7 @@ and open the template in the editor.
 			<INPUT type="text" name="deleteid" id="deleteid" placeholder="输入视频id"/>
 			<BUTTON id="delete">删除视频</BUTTON>
 		</DIV>
+		<DIV id="texts"></DIV>
 		<SCRIPT>
 			$("#delete").click(function () {
 				var id = $("#deleteid").val();
@@ -94,8 +95,9 @@ and open the template in the editor.
 			$("#div").click(function getaaa() {
 				var id = $("#divid").val();
 				alert(id);
-				$.get("https://vimeo.com/api/oembed.json?url=https://player.vimeo.com/video/346998887", {}, function (data) {
+				$.get("https://vimeo.com/api/oembed.json?url=https://player.vimeo.com/video/"+id, {}, function (data) {
 					$("#vimeohtml").html(data.html);
+					$("#texts").text(data.html);
 				});
 			});
 		</SCRIPT>

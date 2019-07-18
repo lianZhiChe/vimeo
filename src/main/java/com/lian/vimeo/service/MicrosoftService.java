@@ -5,6 +5,10 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,7 +36,8 @@ public class MicrosoftService {
 		//添加请求体
 		NameValuePair[] data = {
 			new NameValuePair("client_id", id),
-			new NameValuePair("scope", "Calendars.Read offline_access user.read openid profile"),
+			//			new NameValuePair("scope", "Calendars.Read offline_access user.read openid profile"),
+			new NameValuePair("scope", "User.Read email offline_access openid profile"),
 			new NameValuePair("code", code),
 			new NameValuePair("redirect_uri", "http://localhost:8080/microsft"),
 			new NameValuePair("grant_type", "authorization_code"),
@@ -76,6 +81,27 @@ public class MicrosoftService {
 		System.out.println("getMicrosftToken----" + result);
 		//获取返回参数
 		return result;
+	}
+
+	/**
+	 * 获取用户信息
+	 *
+	 * @param token
+	 * @return
+	 */
+	public String findMicrosftUser(String token) throws IOException {
+		//创建get请求
+		HttpGet httpGet = new HttpGet("https://graph.microsoft.com/v1.0/users");
+		//添加请求头
+		httpGet.setHeader("Authorization", "Bearer " + token);
+		httpGet.setHeader("Accept", "application/json");
+		//发送请求
+		CloseableHttpResponse execute = HttpClients.createDefault().execute(httpGet);
+		String toString = EntityUtils.toString(execute.getEntity());
+		//返回数据
+		System.out.println("getMicrosftToken----" + toString);
+		//获取返回参数
+		return toString;
 	}
 
 	/**

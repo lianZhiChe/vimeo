@@ -72,6 +72,20 @@ public class MicrosoftController {
 		String useMicrosftToken = microsoftService.useMicrosftToken(token);
 		return useMicrosftToken;
 	}
+	
+	/**
+	 * 获取用户信息
+	 *
+	 * @return
+	 */
+	@RequestMapping("/findMicrosftUser")
+	public String findMicrosftUser() throws IOException {
+		//获取令牌
+		HttpSession session = httpServletRequest.getSession();
+		String token = session.getAttribute("Microsft-Token").toString();
+		String useMicrosftToken = microsoftService.findMicrosftUser(token);
+		return useMicrosftToken;
+	}
 
 	/**
 	 * 刷新Microsft令牌

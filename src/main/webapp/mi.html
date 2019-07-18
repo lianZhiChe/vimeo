@@ -16,14 +16,25 @@ and open the template in the editor.
 		<BR/>
 		<HR/>
 		<BR/>
-		<A href="javascript:void(0)" id="div2"><H1>使用令牌-点击/web api请求中使用</H1></A>
+		<A href="javascript:void(0)" id="div2"><H1>使用令牌-点击</H1></A>
 		<DIV id="text"></DIV>
 		<BR/>
 		<HR/>
 		<BR/>
 		<A href="javascript:void(0)" id="div3"><H1>刷新令牌-点击</H1></A>
 		<DIV id="text2"></DIV>
+		<BR/>
+		<HR/>
+		<BR/>
+		<A href="javascript:void(0)" id="div4"><H1>获取用户信息-点击</H1></A>
+		<DIV id="text3"></DIV>
 		<SCRIPT>
+			//获取用户信息
+			$("#div4").click(function () {
+				$.get("/findMicrosftUser", {}, function (data) {
+					$("#text3").text(data);
+				});
+			});
 			//刷新令牌
 			$("#div3").click(function () {
 				$.get("/refreshMicrosftToken", {}, function (data) {
@@ -44,7 +55,8 @@ and open the template in the editor.
 					"&response_type=code" +
 					"&redirect_uri=http://localhost:8080/microsft" +
 					"&response_mode=query" +
-					"&scope=Calendars.Read offline_access user.read openid profile" +
+//					"&scope=Calendars.Read offline_access user.read openid profile" +
+					"&scope=User.Read email offline_access openid profile" +
 					"&state=1");
 			});
 		</SCRIPT>
